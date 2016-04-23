@@ -1,9 +1,15 @@
 module SimpleServer
   class File
-    attr_reader :root
+    attr_accessor :root
 
     def initialize(root)
       @root = root
+    end
+
+    def check_path(path)
+      new_dir = Dir.glob(path.split('/').join('/'))
+      @root = Dir.new(new_dir) if path != "/" && !new_dir.empty?
+      parse_dir_struct
     end
 
     def parse_dir_struct
