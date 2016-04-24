@@ -83,5 +83,10 @@ module SimpleServer
       socket.write(body)
     end
 
+    def self.write_favicon(socket)
+      socket.write(write_status(200))
+      socket.write(write_header(0))
+    end
+
   end
 end

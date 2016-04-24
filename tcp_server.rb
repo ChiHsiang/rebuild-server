@@ -12,16 +12,18 @@ $logger = SimpleServer::Logger.new
 
 loop do
   Thread.fork(web_server.accept) do |socket|
-    env = SimpleServer::Env.new
-    SimpleServer::Request.initialize(env, socket)
+    begin 
+      env = SimpleServer::Env.new
+      SimpleServer::Request.initialize(env, socket)
 
-    unless env[:REQUEST_PATH] == '/favicon.ico'
-      begin 
+      unless env[:REQUEST_PATH] == '/favicon.ico'
         base_dir = root_dir.check_path(env[:REQUEST_PATH])
         SimpleServer::Response.write_response(socket, base_dir)
-      rescue Exception => e
-        puts e
+      else
+        SimpleServer::Response.write_favicon(socket)
       end
+    rescue Exception => e
+      puts e
     end
 
     socket.close
