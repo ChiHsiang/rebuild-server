@@ -6,9 +6,9 @@ require 'awesome_print'
 
 Pry.config.editor = 'vim'
 
+$logger = SimpleServer::Logger.new
 web_server = SimpleServer::Server.new.run
 root_dir = SimpleServer::File.new(Dir.new('.'))
-$logger = SimpleServer::Logger.new
 
 loop do
   Thread.fork(web_server.accept) do |socket|
@@ -23,7 +23,7 @@ loop do
         SimpleServer::Response.write_favicon(socket)
       end
     rescue Exception => e
-      puts e
+      $logger.put_err("Error: #{e}")
     end
 
     socket.close

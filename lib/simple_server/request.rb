@@ -19,6 +19,7 @@ module SimpleServer
     end
 
     def self.parse_request(request_uri)
+      $logger.put_log("[#{Time.now}] #{request_uri}")
       request = request_uri.chop.split(" ")
       parse_uri(request[1])
       @env[:HTTP_METHOD] = request[0]

@@ -10,6 +10,7 @@ module SimpleServer
     end
 
     def run 
+      $logger.put_log("Success Start WebServer on http://#{@host}:#{@port}\r\n")
       TCPServer.new(@host, @port)
     end
   end
