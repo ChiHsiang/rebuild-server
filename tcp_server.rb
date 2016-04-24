@@ -14,7 +14,16 @@ loop do
   Thread.fork(web_server.accept) do |socket|
     env = SimpleServer::Env.new
     SimpleServer::Request.initialize(env, socket)
-    ap base_dir.check_path(env[:REQUEST_PATH])
+
+    unless env[:REQUEST_PATH] == '/favicon.ico'
+      base_dir = base_dir.check_path(env[:REQUEST_PATH])
+      begin 
+        SimpleServer::Response.write_response(socket, base_dir)
+      rescue Exception => e
+        puts e
+      end
+    end
+
     socket.close
   end
 end
