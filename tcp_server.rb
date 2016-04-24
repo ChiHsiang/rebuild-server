@@ -7,7 +7,7 @@ require 'awesome_print'
 Pry.config.editor = 'vim'
 
 web_server = SimpleServer::Server.new.run
-base_dir = SimpleServer::File.new(Dir.new('.'))
+root_dir = SimpleServer::File.new(Dir.new('.'))
 $logger = SimpleServer::Logger.new
 
 loop do
@@ -16,8 +16,8 @@ loop do
     SimpleServer::Request.initialize(env, socket)
 
     unless env[:REQUEST_PATH] == '/favicon.ico'
-      base_dir = base_dir.check_path(env[:REQUEST_PATH])
       begin 
+        base_dir = root_dir.check_path(env[:REQUEST_PATH])
         SimpleServer::Response.write_response(socket, base_dir)
       rescue Exception => e
         puts e

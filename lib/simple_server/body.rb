@@ -8,7 +8,9 @@ module SimpleServer
 
     def render_node(base_dir)
       base_dir[:dir].each { |dir| 
-        @body += "<li>" + "<a href=http://127.0.0.1:3000/#{dir}>#{dir}</a>" + "</li>\r\n"
+        base = "up" if dir == ".."
+        base = "root" if dir == "."
+        @body += "<li>" + "<a href=http://127.0.0.1:3000/#{base || dir}>#{dir}</a>" + "</li>\r\n"
       }
       base_dir[:file].each { |file| 
         @body += "<li>#{file}</li>\r\n"
